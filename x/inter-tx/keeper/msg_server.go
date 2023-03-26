@@ -66,7 +66,7 @@ func (k msgServer) SubmitTx(goCtx context.Context, msg *types.MsgSubmitTx) (*typ
 	return &types.MsgSubmitTxResponse{}, nil
 }
 
-// SubmitTx implements the Msg/SubmitTx interface
+// IBCDelegate implements the Msg/IBCDelegate interface
 func (k msgServer) IBCDelegate(goCtx context.Context, msg *types.MsgIBCDelegate) (*types.MsgIBCDelegateResponse, error) {
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
