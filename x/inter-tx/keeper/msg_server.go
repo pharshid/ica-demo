@@ -2,9 +2,12 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"time"
 
+	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/gogoproto/proto"
 	icatypes "github.com/cosmos/ibc-go/v7/modules/apps/27-interchain-accounts/types"
 
@@ -61,4 +64,23 @@ func (k msgServer) SubmitTx(goCtx context.Context, msg *types.MsgSubmitTx) (*typ
 	}
 
 	return &types.MsgSubmitTxResponse{}, nil
+}
+
+// SubmitTx implements the Msg/SubmitTx interface
+func (k msgServer) IBCDelegate(goCtx context.Context, msg *types.MsgIBCDelegate) (*types.MsgIBCDelegateResponse, error) {
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	res, _ := k.bankKeeper.Balance(ctx, &banktypes.QueryBalanceRequest{Address: msg.Address, Denom: msg.Denom})
+	if res.GetBalance().Amount.IsPositive() {
+		k.SubmitTx(goCtx, &types.MsgSubmitTx{Owner: msg.Owner,
+			ConnectionId: msg.ConnectionId,
+			Msg: &codectypes.Any{Value: []byte(fmt.Sprintf(string(`"@type":"/cosmos.staking.v1beta1.MsgDelegate",
+    "delegator_address":"%s",
+    "validator_address":"%s",
+    "amount": {
+        "denom": "%s",
+        "amount": "%d"
+    }`), msg.DelAddr, msg.Validator, msg.Denom, msg.BondAmt))}})
+	}
+	return &types.MsgIBCDelegateResponse{}, nil
 }

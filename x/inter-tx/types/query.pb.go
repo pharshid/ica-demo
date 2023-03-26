@@ -6,9 +6,8 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	grpc1 "github.com/cosmos/gogoproto/grpc"
-	proto "github.com/cosmos/gogoproto/proto"
 	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -178,10 +177,10 @@ type QueryClient interface {
 }
 
 type queryClient struct {
-	cc grpc1.ClientConn
+	cc *grpc.ClientConn
 }
 
-func NewQueryClient(cc grpc1.ClientConn) QueryClient {
+func NewQueryClient(cc *grpc.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
@@ -208,7 +207,7 @@ func (*UnimplementedQueryServer) InterchainAccount(ctx context.Context, req *Que
 	return nil, status.Errorf(codes.Unimplemented, "method InterchainAccount not implemented")
 }
 
-func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
+func RegisterQueryServer(s *grpc.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 

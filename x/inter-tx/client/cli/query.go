@@ -32,7 +32,7 @@ func getInterchainAccountCmd() *cobra.Command {
 				return err
 			}
 
-			queryClient := types.NewQueryClient(clientCtx)
+			queryClient := types.NewQueryClient(clientCtx.GRPCClient)
 			res, err := queryClient.InterchainAccount(cmd.Context(), types.NewQueryInterchainAccountRequest(args[0], args[1]))
 			if err != nil {
 				return err

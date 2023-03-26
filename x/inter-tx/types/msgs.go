@@ -13,6 +13,7 @@ import (
 var (
 	_ sdk.Msg = &MsgRegisterAccount{}
 	_ sdk.Msg = &MsgSubmitTx{}
+	_ sdk.Msg = &MsgIBCDelegate{}
 
 	_ codectypes.UnpackInterfacesMessage = MsgSubmitTx{}
 )
@@ -112,5 +113,33 @@ func (msg MsgSubmitTx) ValidateBasic() error {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "invalid owner address")
 	}
 
+	return nil
+}
+
+// NewMsgIBCDelegate creates and returns a new MsgIBCDelegate instance
+func NewMsgIBCDelegate(sdkMsg sdk.Msg, connectionID, owner string, address string, denom string) (*MsgIBCDelegate, error) {
+	return &MsgIBCDelegate{
+		ConnectionId: connectionID,
+		Owner:        owner,
+		Address:      address,
+		Denom:        denom,
+	}, nil
+}
+
+// GetSigners implements sdk.Msg
+func (msg MsgIBCDelegate) GetSigners() []sdk.AccAddress {
+	accAddr, err := sdk.AccAddressFromBech32(msg.Owner)
+	if err != nil {
+		panic(err)
+	}
+	return []sdk.AccAddress{accAddr}
+}
+
+// ValidateBasic implements sdk.Msg
+func (msg MsgIBCDelegate) ValidateBasic() error {
+	_, err := sdk.AccAddressFromBech32(msg.Owner)
+	if err != nil {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "invalid owner address")
+	}
 	return nil
 }

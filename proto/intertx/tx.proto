@@ -13,6 +13,8 @@ service Msg {
   rpc RegisterAccount(MsgRegisterAccount) returns (MsgRegisterAccountResponse);
   // SubmitTx defines a rpc handler for MsgSubmitTx
   rpc SubmitTx(MsgSubmitTx) returns (MsgSubmitTxResponse);
+  // Delegate defines a rpc handler for MsgIBCDelegate
+  rpc IBCDelegate(MsgIBCDelegate) returns (MsgIBCDelegateResponse);
 }
 
 // MsgRegisterAccount defines the payload for Msg/RegisterAccount
@@ -40,3 +42,21 @@ message MsgSubmitTx {
 
 // MsgSubmitTxResponse defines the response for Msg/SubmitTx
 message MsgSubmitTxResponse {}
+
+// MsgIBCDelegate defines the payload for Msg/Delegate
+message MsgIBCDelegate {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  string              owner         = 1;
+  string              connection_id = 2 [(gogoproto.moretags) = "yaml:\"connection_id\""];
+  string              address       = 3;
+  string              denom         = 4;
+  string              del_addr      = 5;
+  int32               bond_amt      = 6;
+  string              validator     = 7;
+
+}
+
+// MsgIBCDelegateResponse defines the response for Msg/Delegate
+message MsgIBCDelegateResponse {}
