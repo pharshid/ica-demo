@@ -1,11 +1,8 @@
 # Interchain Accounts
 
-Developers integrating Interchain Accounts may choose to firstly enable host chain functionality, and add authentication modules later as desired.
-Documentation regarding authentication modules can be found in the [IBC Developer Documentation](https://ibc.cosmos.network/main/apps/interchain-accounts/overview.html). This is the updated and modified version of the original demo maintained [here](https://github.com/cosmos/interchain-accounts-demo).
+Developers integrating Interchain Accounts may choose to firstly enable host chain functionality, and add authentication modules later as desired. This is the updated and modified version of the original demo maintained [here](https://github.com/cosmos/interchain-accounts-demo).
 
 ## Overview 
-
-The following repository contains a basic example of an Interchain Accounts authentication module and serves as a developer guide for teams that wish to use interchain accounts functionality.
 
 The Interchain Accounts module is now maintained within the `ibc-go` repository [here](https://github.com/cosmos/ibc-go/tree/main/modules/apps/27-interchain-accounts). 
 Interchain Accounts is now available in the [`v3.0.0`](https://github.com/cosmos/ibc-go/releases/tag/v3.0.0) release of `ibc-go`.
